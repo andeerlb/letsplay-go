@@ -1,47 +1,47 @@
 # letsplay Microservice
 
-Microserviço em Go para criação de jogadores, que chama outro microserviço para persistência.
+Go microservice for creating players, which calls another microservice for persistence.
 
-## Estrutura do projeto
+## Project Structure
 
-- `cmd/letsplay/main.go`: Ponto de entrada
-- `internal/config`: Configurações com Viper (suporte a profiles demo/dev/prod)
-- `internal/logger`: Logger estruturado com Zap
-- `internal/model`: Models e structs
-- `internal/client`: Client HTTP para o outro microserviço
-- `internal/service`: Lógica de negócio
-- `internal/handler`: Handlers HTTP (controllers)
-- `internal/router`: Configuração das rotas
-- `internal/server`: Setup do servidor HTTP
-- `tests`: Testes unitários e integração (não implementados aqui)
+* `cmd/letsplay/main.go`: Entry point
+* `internal/config`: Configuration using Viper (supports demo/dev/prod profiles)
+* `internal/logger`: Structured logger with Zap
+* `internal/model`: Models and structs
+* `internal/client`: HTTP client for the other microservice
+* `internal/service`: Business logic
+* `internal/handler`: HTTP handlers (controllers)
+* `internal/router`: Route configuration
+* `internal/server`: HTTP server setup
+* `tests`: Unit and integration tests (not implemented here)
 
-## Como rodar
+## How to Run
 
-1. Instale o Go (>=1.20)
+1. Install Go (>=1.20)
 
-2. Configure variável de ambiente `APP_ENV` para escolher o ambiente (demo, dev, prod). Default: dev
+2. Set the environment variable `APP_ENV` to choose the environment (demo, dev, prod). Default: `dev`
 
-3. Configure variáveis específicas para cada ambiente via arquivo `.env` na pasta `configs` (opcional), exemplo:
+3. Configure environment-specific variables using a `.env` file inside the `configs` folder (optional), for example:
 
-```
+```env
 SERVER_PORT=8080
 LOG_LEVEL=info
 PLAYER_SERVICE_URL=http://localhost:9000
 ```
 
-4. Baixe dependências:
+4. Download dependencies:
 
 ```bash
 go mod tidy
 ```
 
-5. Rode o microserviço:
+5. Run the microservice:
 
 ```bash
 go run cmd/letsplay/main.go
 ```
 
-6. Teste o endpoint:
+6. Test the endpoint:
 
 ```bash
 curl -X POST http://localhost:8080/newplayer \
@@ -60,11 +60,11 @@ curl -X POST http://localhost:8080/newplayer \
  }'
 ```
 
-## Como expandir
+## How to Expand
 
-- Adicionar testes unitários e de integração
-- Middleware de autenticação (JWT/OAuth)
-- Monitoramento e métricas (Prometheus, OpenTelemetry)
-- Configuração dinâmica via Consul/Etcd
-- Dockerfile e CI/CD
-- Melhor tratamento de erros e logs estruturados
+* Add unit and integration tests
+* Authentication middleware (JWT/OAuth)
+* Monitoring and metrics (Prometheus, OpenTelemetry)
+* Dynamic configuration via Consul/Etcd
+* Dockerfile and CI/CD pipeline
+* Improved error handling and structured logging
