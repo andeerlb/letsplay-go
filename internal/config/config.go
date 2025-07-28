@@ -15,6 +15,10 @@ type Config struct {
 	LogLevel      string
 }
 
+func JWTSecret() []byte {
+	return []byte(viper.GetString("JWT_SECRET"))
+}
+
 func LoadConfig() (*Config, error) {
 	v := viper.New()
 	v.SetConfigType("env")
