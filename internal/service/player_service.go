@@ -14,6 +14,6 @@ func NewPlayerService(client *client.PlayerClient) *PlayerService {
 	return &PlayerService{client: client}
 }
 
-func (ps *PlayerService) CreateNewPlayer(ctx context.Context, payload model.SignUpAuthServer) (*model.AuthTokenResponse, error) {
+func (ps *PlayerService) CreateNewPlayer(ctx context.Context, payload model.UserAuth) (*model.AuthTokenResponse, error) {
 	return ps.client.CreatePlayer(ctx, payload)
 }
