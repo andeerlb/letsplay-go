@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "DEV",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/cmd/letsplay/main.go",
+      "env": {
+        "APP_ENV": "dev"
+      }
+    },
+    {
+      "name": "QA",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${fileDirname}",
+      "env": {
+        "APP_ENV": "qa"
+      }
+    }
+  ]
+}
