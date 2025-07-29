@@ -1,13 +1,12 @@
 package router
 
 import (
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"letsplay-microservice/internal/bootstrap"
 	"letsplay-microservice/internal/config"
 	"letsplay-microservice/internal/handler"
 	"letsplay-microservice/internal/middleware"
-
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gin.Engine {
@@ -23,8 +22,8 @@ func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gi
 	protected := router.Group("/api")
 	protected.Use(middleware.JWTAuthMiddleware(&cfg.JwtSecret))
 	{
-		protected.GET("/user")
-		protected.GET("/settings")
+		protected.GET("/user", handler.UserHandler)
+		protected.GET("/settings", handler.SettingsHandler)
 	}
 
 	return router
