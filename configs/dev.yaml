@@ -1,0 +1,12 @@
+server_port: 9090
+auth_server_url: http://localhost:9999
+log_level: debug
+
+db:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: root
+  name: postgres
+  sslmode: disable
+  search_path: core

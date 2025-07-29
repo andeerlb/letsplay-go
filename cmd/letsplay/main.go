@@ -3,6 +3,7 @@ package main
 import (
 	"letsplay-microservice/internal/bootstrap"
 	"letsplay-microservice/internal/config"
+	"letsplay-microservice/internal/database"
 	"letsplay-microservice/internal/logger"
 	"letsplay-microservice/internal/router"
 	"letsplay-microservice/internal/server"
@@ -22,11 +23,12 @@ func main() {
 		log.Fatalf("failed to create logger: %v", err)
 	}
 
+	database.InitPostgres(cfg)
 	container := bootstrap.BuildContainer(cfg, logg)
-	router := router.NewRouter(container, logg, cfg)
+	r := router.NewRouter(container, logg, cfg)
 
-	server := server.NewServer(router, cfg.ServerPort, logg)
-	if err := server.Start(); err != nil {
+	s := server.NewServer(r, cfg.ServerPort, logg)
+	if err := s.Start(); err != nil {
 		logg.Fatal("server failed to start", zap.Error(err))
 	}
 }
