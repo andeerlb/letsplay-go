@@ -6,11 +6,12 @@ import (
 	_ "github.com/lib/pq"
 	"letsplay-microservice/internal/config"
 	"log"
+	"time"
 )
 
 var DB *sqlx.DB
 
-func InitPostgres(cfg *config.Config) {
+func InitPostgres(cfg *config.Config) (*sqlx.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s search_path=%s",
 		cfg.DB.Host,
@@ -28,5 +29,11 @@ func InitPostgres(cfg *config.Config) {
 		log.Fatalf("Could not connect to PostgreSQL: %v", err)
 	}
 
+	DB.SetMaxOpenConns(20)
+	DB.SetMaxIdleConns(10)
+	DB.SetConnMaxLifetime(10 * time.Minute)
+
+	db := DB
 	log.Println("Connected to PostgreSQL")
+	return db, nil
 }

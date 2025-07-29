@@ -43,6 +43,6 @@ var positionsFutsal = []PlayerPosition{
 }
 
 type GameInfo struct {
-	Type     GameType       `json:"type"`
-	Position PlayerPosition `json:"position"`
+	Type     string `json:"type"`
+	Position string `json:"position"`
 }

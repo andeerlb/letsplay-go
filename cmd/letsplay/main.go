@@ -24,6 +24,15 @@ func main() {
 	}
 
 	database.InitPostgres(cfg)
+
+	db, err := database.InitPostgres(cfg)
+	if err != nil {
+		logg.Fatal("failed to connect to postgres", zap.Error(err))
+	}
+	defer db.Close()
+
+	database.RunMigrations(db.DB)
+
 	container := bootstrap.BuildContainer(cfg, logg)
 	r := router.NewRouter(container, logg, cfg)
 
