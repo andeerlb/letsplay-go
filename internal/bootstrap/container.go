@@ -3,7 +3,9 @@ package bootstrap
 import (
 	"letsplay-microservice/internal/client"
 	"letsplay-microservice/internal/config"
+	"letsplay-microservice/internal/database"
 	"letsplay-microservice/internal/handler"
+	"letsplay-microservice/internal/pkg/userdefinitions"
 	"letsplay-microservice/internal/service"
 
 	"go.uber.org/zap"
@@ -15,7 +17,12 @@ type Container struct {
 
 func BuildContainer(config *config.Config, logger *zap.Logger) *Container {
 	playerClient := client.NewPlayerClient(config.AuthServerUrl, logger)
-	playerService := service.NewPlayerService(playerClient)
+
+	userDefinitionsRepo := userdefinitions.NewRepository(database.DB)
+
+	playerService := service.NewPlayerService(playerClient, userDefinitionsRepo)
+
+	// Handler
 	playerHandler := handler.NewPlayerHandler(playerService)
 
 	return &Container{

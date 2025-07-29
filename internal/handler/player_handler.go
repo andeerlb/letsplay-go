@@ -32,7 +32,7 @@ func (h *PlayerHandler) SignUp(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 6*time.Second)
 	defer cancel()
 
-	created, err := h.service.CreateNewPlayer(ctx, payload.UserAuth)
+	created, err := h.service.CreateNewPlayer(ctx, payload)
 	if err != nil {
 		if err.Error() == "USER_ALREADY_EXISTS" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "USER_ALREADY_EXISTS"})
