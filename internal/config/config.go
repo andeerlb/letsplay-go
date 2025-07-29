@@ -13,10 +13,7 @@ type Config struct {
 	ServerPort    string
 	AuthServerUrl string
 	LogLevel      string
-}
-
-func JWTSecret() []byte {
-	return []byte(viper.GetString("JWT_SECRET"))
+	JwtSecret     []byte
 }
 
 func LoadConfig() (*Config, error) {
@@ -44,11 +41,18 @@ func LoadConfig() (*Config, error) {
 	v.AutomaticEnv()
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
+	jwtSecret := v.GetString("JWT_SECRET")
+
+	if jwtSecret == "" {
+		return nil, fmt.Errorf("JWT_SECRET cannot be empty")
+	}
+
 	cfg := &Config{
 		Env:           env,
 		ServerPort:    v.GetString("SERVER_PORT"),
 		LogLevel:      v.GetString("LOG_LEVEL"),
 		AuthServerUrl: v.GetString("AUTH_SERVER_URL"),
+		JwtSecret:     []byte(jwtSecret),
 	}
 
 	// Basic validation

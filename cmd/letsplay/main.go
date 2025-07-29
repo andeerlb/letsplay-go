@@ -23,7 +23,7 @@ func main() {
 	}
 
 	container := bootstrap.BuildContainer(cfg, logg)
-	router := router.NewRouter(container, logg)
+	router := router.NewRouter(container, logg, cfg)
 
 	server := server.NewServer(router, cfg.ServerPort, logg)
 	if err := server.Start(); err != nil {

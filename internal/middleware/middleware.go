@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"letsplay-microservice/internal/config"
 	"net/http"
 	"strings"
 	"time"
@@ -10,9 +9,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtSecret = config.JWTSecret()
-
-func JWTAuthMiddleware() gin.HandlerFunc {
+func JWTAuthMiddleware(jwtSecret *[]byte) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {

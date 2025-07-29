@@ -9,7 +9,8 @@
       "cwd": "${workspaceFolder}",
       "program": "${workspaceFolder}/cmd/letsplay/main.go",
       "env": {
-        "APP_ENV": "dev"
+        "APP_ENV": "dev",
+        "JWT_SECRET": "${env.JWT_SECRET}"
       }
     },
     {
@@ -19,7 +20,8 @@
       "mode": "auto",
       "program": "${fileDirname}",
       "env": {
-        "APP_ENV": "qa"
+        "APP_ENV": "qa",
+        "JWT_SECRET": "${env.JWT_SECRET}"
       }
     }
   ]
