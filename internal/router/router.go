@@ -23,7 +23,8 @@ func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gi
 	protected := router.Group("/api")
 	protected.Use(middleware.JWTAuthMiddleware(&cfg.JwtSecret))
 	{
-		// protected.GET("/user", ...)
+		protected.GET("/user")
+		protected.GET("/settings")
 	}
 
 	return router

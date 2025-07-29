@@ -10,7 +10,8 @@
       "program": "${workspaceFolder}/cmd/letsplay/main.go",
       "env": {
         "APP_ENV": "dev",
-        "JWT_SECRET": "${env.JWT_SECRET}"
+        "JWT_SECRET": "${env.JWT_SECRET}",
+        "GIN_MODE": "debug"
       }
     },
     {
@@ -21,7 +22,8 @@
       "program": "${fileDirname}",
       "env": {
         "APP_ENV": "qa",
-        "JWT_SECRET": "${env.JWT_SECRET}"
+        "JWT_SECRET": "${env.JWT_SECRET}",
+        "GIN_MODE": "debug"
       }
     }
   ]
