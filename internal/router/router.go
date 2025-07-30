@@ -16,7 +16,7 @@ func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gi
 	public := router.Group("/api/public")
 	{
 		public.GET("/health", handler.HealthCheck)
-		public.POST("/newplayer", c.UserHandler.SignUp)
+		public.POST("/signup", c.UserHandler.SignUp)
 	}
 
 	protected := router.Group("/api")
