@@ -68,7 +68,6 @@ func (r *Repository) Get(userID uuid.UUID) (*model.UserDefinitions, error) {
 		&preferredSportJSON,
 		&otherSportsJSON,
 	)
-	
 	if err != nil {
 		return nil, err
 	}
