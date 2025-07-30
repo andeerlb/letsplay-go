@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 )
 
 func JWTAuthMiddleware(jwtSecret *[]byte) gin.HandlerFunc {
@@ -46,7 +47,19 @@ func JWTAuthMiddleware(jwtSecret *[]byte) gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user", claims)
+		userIDStr, ok := claims["sub"].(string)
+		if !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "user_id not found in token"})
+			return
+		}
+
+		userID, err := uuid.Parse(userIDStr)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid user_id format"})
+			return
+		}
+
+		c.Set("userID", userID)
 
 		c.Next()
 	}

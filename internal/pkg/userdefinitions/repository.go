@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"letsplay-microservice/internal/model"
+	"time"
 )
 
 type Repository struct {
@@ -45,4 +46,47 @@ func (r *Repository) Save(userID uuid.UUID, definitions model.UserDefinitions) e
 	)
 
 	return err
+}
+
+func (r *Repository) Get(userID uuid.UUID) (*model.UserDefinitions, error) {
+	var (
+		nickname           string
+		birthdate          time.Time
+		preferredSportJSON []byte
+		otherSportsJSON    []byte
+	)
+
+	query := `
+		SELECT nickname, birthdate, preferred_sport, other_sports
+		FROM user_definitions
+		WHERE user_id = $1
+	`
+
+	err := r.db.QueryRow(query, userID).Scan(
+		&nickname,
+		&birthdate,
+		&preferredSportJSON,
+		&otherSportsJSON,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	var preferred model.GameInfo
+	if err := json.Unmarshal(preferredSportJSON, &preferred); err != nil {
+		return nil, err
+	}
+
+	var others []model.GameInfo
+	if err := json.Unmarshal(otherSportsJSON, &others); err != nil {
+		return nil, err
+	}
+
+	return &model.UserDefinitions{
+		UserID:         userID,
+		Nickname:       nickname,
+		Birthdate:      birthdate,
+		PreferredSport: preferred,
+		OtherSports:    others,
+	}, nil
 }
