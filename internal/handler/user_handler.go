@@ -49,6 +49,12 @@ func (h *UserHandler) Get(c *gin.Context) {
 	response, err := h.service.GetUserDefinitions(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "FAILED_TO_GET_USER_DEFINITIONS"})
+		return
 	}
-	c.JSON(http.StatusOK, response)
+
+	if response == nil {
+		c.JSON(http.StatusNoContent, nil)
+	} else {
+		c.JSON(http.StatusOK, response)
+	}
 }

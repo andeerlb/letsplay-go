@@ -59,7 +59,7 @@ func (r *Repository) Get(userID uuid.UUID) (*model.Settings, error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return &model.Settings{}, nil
+			return nil, nil
 		}
 		return nil, err
 	}
