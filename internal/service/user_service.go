@@ -23,22 +23,6 @@ func NewUserService(client *client.PlayerClient, repo *userdefinitions.Repositor
 }
 
 func (us *UserService) SignUp(ctx context.Context, payload model.SignUp) (*model.AuthTokenResponse, error) {
-	if payload.UserDefinitions.Nickname == "" {
-		return nil, fmt.Errorf("FAILED_TO_DELETE_USER_REQUIRED_FIELDS_IS_EMPTY: Nickname is empty")
-	}
-
-	if payload.UserDefinitions.Birthdate.IsZero() {
-		return nil, fmt.Errorf("FAILED_TO_DELETE_USER_REQUIRED_FIELDS_IS_EMPTY: Birthdate is empty")
-	}
-
-	if payload.UserDefinitions.PreferredSport.Position == "" {
-		return nil, fmt.Errorf("FAILED_TO_DELETE_USER_REQUIRED_FIELDS_IS_EMPTY: PreferredSport.Position is empty")
-	}
-
-	if payload.UserDefinitions.PreferredSport.Type == "" {
-		return nil, fmt.Errorf("FAILED_TO_DELETE_USER_REQUIRED_FIELDS_IS_EMPTY: PreferredSport.Type is empty")
-	}
-
 	player, err := us.client.CreateUserAccount(ctx, payload.UserAuth)
 	if err != nil {
 		return nil, err
