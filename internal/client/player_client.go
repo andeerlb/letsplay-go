@@ -58,12 +58,12 @@ func (pc *PlayerClient) CreateUserAccount(ctx context.Context, payload model.Use
 	return &created, nil
 }
 
-func (pc *PlayerClient) DeleteUserAccount(ctx context.Context) (*bool, error) {
+func (pc *PlayerClient) DeleteUserAccount(userUUID uuid.UUID, ctx context.Context) (*bool, error) {
 	resp, err := pc.client.R().
 		SetContext(ctx).
 		SetHeader("Content-Type", "application/json").
 		SetHeader("Authorization", "Bearer "+os.Getenv("LETSPLAY_JWT_ADMIN_TOKEN")).
-		Delete(pc.baseURL + "/admin/users/" + ctx.Value("userID").(uuid.UUID).String())
+		Delete(pc.baseURL + "/admin/users/" + userUUID.String())
 
 	if err != nil {
 		return nil, err

@@ -28,7 +28,7 @@ func (r *Repository) Save(userID uuid.UUID, definitions model.UserDefinitions) e
 	}
 
 	query := `
-		INSERT INTO user_definitions (suser_id, nickname, birthdate, preferred_sport, other_sports)
+		INSERT INTO user_definitions (user_id, nickname, birthdate, preferred_sport, other_sports)
 		VALUES ($1, $2, $3, $4, $5)
 		ON CONFLICT (user_id) DO UPDATE SET
 			nickname = EXCLUDED.nickname,

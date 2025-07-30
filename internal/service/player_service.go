@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"letsplay-microservice/internal/client"
 	"letsplay-microservice/internal/model"
 	"letsplay-microservice/internal/pkg/userdefinitions"
@@ -29,11 +30,8 @@ func (ps *PlayerService) CreateNewPlayer(ctx context.Context, payload model.Sign
 	err = ps.repository.Save(player.User.Id, payload.UserDefinitions)
 
 	if err != nil {
-		_, err := ps.client.DeleteUserAccount(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
+		ps.client.DeleteUserAccount(player.User.Id, ctx)
+		return nil, errors.New("FAILED_TO_DELETE_USER")
 	}
 
 	return player, nil

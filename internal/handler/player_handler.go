@@ -38,7 +38,7 @@ func (h *PlayerHandler) SignUp(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "USER_ALREADY_EXISTS"})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "ERROR_CREATING_PLAYER"})
 		return
 	}
 
