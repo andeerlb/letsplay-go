@@ -12,8 +12,8 @@ type UserAuth struct {
 
 type UserDefinitions struct {
 	UserID         uuid.UUID  `json:"-" db:"user_id"`
-	Nickname       string     `json:"nickname" db:"nickname"`
-	Birthdate      time.Time  `json:"birthdate" db:"birthdate"`
-	PreferredSport GameInfo   `json:"preferredSport" db:"preferred_sport"`
-	OtherSports    []GameInfo `json:"otherSports" db:"other_sports"`
+	Nickname       string     `json:"nickname" db:"nickname" binding:"required"`
+	Birthdate      time.Time  `json:"birthdate" db:"birthdate" binding:"required"`
+	PreferredSport GameInfo   `json:"preferredSport" db:"preferred_sport" binding:"required"`
+	OtherSports    []GameInfo `json:"otherSports,omitempty" db:"other_sports"`
 }
