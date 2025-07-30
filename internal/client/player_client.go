@@ -3,7 +3,9 @@ package client
 import (
 	"context"
 	"errors"
+	"github.com/google/uuid"
 	"net/http"
+	"os"
 	"time"
 
 	"letsplay-microservice/internal/model"
@@ -26,7 +28,7 @@ func NewPlayerClient(baseURL string, logger *zap.Logger) *PlayerClient {
 	}
 }
 
-func (pc *PlayerClient) CreatePlayer(ctx context.Context, payload model.UserAuth) (*model.AuthTokenResponse, error) {
+func (pc *PlayerClient) CreateUserAccount(ctx context.Context, payload model.UserAuth) (*model.AuthTokenResponse, error) {
 	var created model.AuthTokenResponse
 
 	resp, err := pc.client.R().
@@ -54,4 +56,23 @@ func (pc *PlayerClient) CreatePlayer(ctx context.Context, payload model.UserAuth
 	}
 
 	return &created, nil
+}
+
+func (pc *PlayerClient) DeleteUserAccount(ctx context.Context) (*bool, error) {
+	resp, err := pc.client.R().
+		SetContext(ctx).
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", "Bearer "+os.Getenv("LETSPLAY_JWT_ADMIN_TOKEN")).
+		Delete(pc.baseURL + "/admin/users/" + ctx.Value("userID").(uuid.UUID).String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode() > 299 {
+		return nil, errors.New("FAILED_TO_DELETE_USER")
+	}
+
+	success := true
+	return &success, nil
 }

@@ -24,6 +24,7 @@ services:
       - 9999:9999
     environment:
       - GOTRUE_JWT_SECRET=${LETSPLAY_JWT_SECRET}
+      - GOTRUE_ADMIN_TOKEN=${LETSPLAY_JWT_ADMIN_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy

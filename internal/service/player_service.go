@@ -20,7 +20,7 @@ func NewPlayerService(client *client.PlayerClient, repo *userdefinitions.Reposit
 }
 
 func (ps *PlayerService) CreateNewPlayer(ctx context.Context, payload model.SignUp) (*model.AuthTokenResponse, error) {
-	player, err := ps.client.CreatePlayer(ctx, payload.UserAuth)
+	player, err := ps.client.CreateUserAccount(ctx, payload.UserAuth)
 
 	if err != nil {
 		return nil, err
@@ -29,8 +29,12 @@ func (ps *PlayerService) CreateNewPlayer(ctx context.Context, payload model.Sign
 	err = ps.repository.Save(player.User.Id, payload.UserDefinitions)
 
 	if err != nil {
+		_, err := ps.client.DeleteUserAccount(ctx)
+		if err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
-	
+
 	return player, nil
 }

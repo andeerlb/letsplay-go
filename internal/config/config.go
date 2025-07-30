@@ -15,6 +15,7 @@ type Config struct {
 	AuthServerUrl string `mapstructure:"auth_server_url"`
 	LogLevel      string `mapstructure:"log_level"`
 	JwtSecret     []byte `mapstructure:"-"`
+	JwtAdminToken []byte `mapstructure:"-"`
 	DB            struct {
 		Host       string `mapstructure:"host"`
 		Port       int    `mapstructure:"port"`
@@ -58,6 +59,13 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("jwt_secret must be set")
 	}
 	cfg.JwtSecret = []byte(jwtSecret)
+
+	jwtAdminToken := v.GetString("jwt_admin_token")
+	if jwtAdminToken == "" {
+		return nil, fmt.Errorf("jwt_admin_token must be set")
+	}
+	cfg.JwtAdminToken = []byte(jwtAdminToken)
+
 	cfg.Env = envName
 
 	if cfg.ServerPort == "" {
