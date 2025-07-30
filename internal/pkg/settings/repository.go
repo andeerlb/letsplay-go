@@ -1,6 +1,7 @@
 package settings
 
 import (
+	"database/sql"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"letsplay-microservice/internal/model"
@@ -57,6 +58,9 @@ func (r *Repository) Get(userID uuid.UUID) (*model.Settings, error) {
 	)
 
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return &model.Settings{}, nil
+		}
 		return nil, err
 	}
 

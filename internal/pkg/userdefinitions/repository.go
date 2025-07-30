@@ -1,6 +1,7 @@
 package userdefinitions
 
 import (
+	"database/sql"
 	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
@@ -68,7 +69,11 @@ func (r *Repository) Get(userID uuid.UUID) (*model.UserDefinitions, error) {
 		&preferredSportJSON,
 		&otherSportsJSON,
 	)
+
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return &model.UserDefinitions{}, nil
+		}
 		return nil, err
 	}
 
