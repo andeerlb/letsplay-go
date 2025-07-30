@@ -20,7 +20,7 @@ func BuildContainer(config *config.Config, logger *zap.Logger) *Container {
 
 	userDefinitionsRepo := userdefinitions.NewRepository(database.DB)
 
-	playerService := service.NewPlayerService(playerClient, userDefinitionsRepo)
+	playerService := service.NewUserService(playerClient, userDefinitionsRepo)
 
 	// Handler
 	playerHandler := handler.NewPlayerHandler(playerService)

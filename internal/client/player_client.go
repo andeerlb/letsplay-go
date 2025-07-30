@@ -58,7 +58,7 @@ func (pc *PlayerClient) CreateUserAccount(ctx context.Context, payload model.Use
 	return &created, nil
 }
 
-func (pc *PlayerClient) DeleteUserAccount(userUUID uuid.UUID, ctx context.Context) (*bool, error) {
+func (pc *PlayerClient) DeleteUser(userUUID uuid.UUID, ctx context.Context) (*bool, error) {
 	resp, err := pc.client.R().
 		SetContext(ctx).
 		SetHeader("Content-Type", "application/json").
