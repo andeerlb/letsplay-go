@@ -11,7 +11,7 @@ type UserAuth struct {
 }
 
 type UserDefinitions struct {
-	UserID         uuid.UUID  `db:"user_id"`
+	UserID         uuid.UUID  `json:"-" db:"user_id"`
 	Nickname       string     `json:"nickname" db:"nickname"`
 	Birthdate      time.Time  `json:"birthdate" db:"birthdate"`
 	PreferredSport GameInfo   `json:"preferredSport" db:"preferred_sport"`

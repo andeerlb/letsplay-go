@@ -3,7 +3,9 @@ package service
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"letsplay-microservice/internal/client"
+	"letsplay-microservice/internal/middleware"
 	"letsplay-microservice/internal/model"
 	"letsplay-microservice/internal/pkg/userdefinitions"
 )
@@ -32,4 +34,13 @@ func (us *UserService) SignUp(ctx context.Context, payload model.SignUp) (*model
 	}
 
 	return player, nil
+}
+
+func (us *UserService) GetUserDefinitions(ctx context.Context) (*model.UserDefinitions, error) {
+	userUUID, _ := ctx.Value(middleware.UserIDKey).(uuid.UUID)
+	userDefinitions, err := us.repository.Get(userUUID)
+	if err != nil {
+		return nil, fmt.Errorf("FAILED_TO_GET_USER_DEFINITIONS")
+	}
+	return userDefinitions, nil
 }

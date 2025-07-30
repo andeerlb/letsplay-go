@@ -9,50 +9,48 @@ import (
 	"github.com/google/uuid"
 )
 
-type ctxKey string
-
-const userIDKey ctxKey = "userID"
+const UserIDKey string = "userID"
 
 func JWTAuthMiddleware(jwtSecret *[]byte) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
-		if authHeader == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+			unauthorized(c)
 			return
 		}
 
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
-		if tokenString == authHeader {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-			return
-		}
 
 		claims := jwt.MapClaims{}
-
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, jwt.ErrTokenMalformed
+				return nil, jwt.ErrTokenUnverifiable
 			}
 			return *jwtSecret, nil
 		})
+
 		if err != nil || !token.Valid {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			unauthorized(c)
 			return
 		}
 
 		sub, ok := claims["sub"].(string)
 		if !ok {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			unauthorized(c)
 			return
 		}
 
 		userID, err := uuid.Parse(sub)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			unauthorized(c)
 			return
 		}
 
-		c.Set(string(userIDKey), userID)
+		c.Set(UserIDKey, userID)
 		c.Next()
 	}
+}
+
+func unauthorized(c *gin.Context) {
+	c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 }

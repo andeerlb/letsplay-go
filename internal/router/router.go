@@ -16,13 +16,13 @@ func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gi
 	public := router.Group("/api/public")
 	{
 		public.GET("/health", handler.HealthCheck)
-		public.POST("/newplayer", c.PlayerHandler.SignUp)
+		public.POST("/newplayer", c.UserHandler.SignUp)
 	}
 
 	protected := router.Group("/api")
 	protected.Use(middleware.JWTAuthMiddleware(&cfg.JwtSecret))
 	{
-		protected.GET("/user", handler.UserHandler)
+		protected.GET("/user", c.UserHandler.Get)
 		protected.GET("/settings", handler.SettingsHandler)
 	}
 

@@ -12,7 +12,7 @@ import (
 )
 
 type Container struct {
-	PlayerHandler *handler.PlayerHandler
+	UserHandler *handler.UserHandler
 }
 
 func BuildContainer(config *config.Config, logger *zap.Logger) *Container {
@@ -23,9 +23,9 @@ func BuildContainer(config *config.Config, logger *zap.Logger) *Container {
 	playerService := service.NewUserService(playerClient, userDefinitionsRepo)
 
 	// Handler
-	playerHandler := handler.NewPlayerHandler(playerService)
+	userHandler := handler.NewUserHandler(playerService)
 
 	return &Container{
-		PlayerHandler: playerHandler,
+		UserHandler: userHandler,
 	}
 }
