@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"letsplay-microservice/internal/locale"
 	"net/http"
 	"time"
 
@@ -35,10 +36,12 @@ func (h *UserHandler) SignUp(c *gin.Context) {
 	created, err := h.service.SignUp(ctx, payload)
 	if err != nil {
 		if err.Error() == "USER_ALREADY_EXISTS" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "USER_ALREADY_EXISTS"})
+			msg := locale.Msg(ctx, "user_handler.user-already-exists")
+			c.JSON(http.StatusBadRequest, gin.H{"error": msg})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "ERROR_CREATING_PLAYER"})
+		msg := locale.Msg(ctx, "user_service.failed-to-delete-user")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
 		return
 	}
 

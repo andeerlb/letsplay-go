@@ -10,14 +10,14 @@ import (
 var Bundle *i18n.Bundle
 
 func Init() {
-	Bundle := i18n.NewBundle(language.English)
+	Bundle = i18n.NewBundle(language.BrazilianPortuguese)
 	Bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
 
-	_, err := Bundle.LoadMessageFile("locale/locale.en.toml")
+	_, err := Bundle.LoadMessageFile("locale/active.en.toml")
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = Bundle.LoadMessageFile("locale/locale.pt.toml")
+	_, err = Bundle.LoadMessageFile("locale/active.pt.toml")
 	if err != nil {
 		log.Fatal(err)
 	}

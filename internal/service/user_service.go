@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"letsplay-microservice/internal/client"
+	"letsplay-microservice/internal/locale"
 	"letsplay-microservice/internal/middleware"
 	"letsplay-microservice/internal/model"
 	"letsplay-microservice/internal/pkg/userdefinitions"
@@ -28,9 +29,11 @@ func (us *UserService) SignUp(ctx context.Context, payload model.SignUp) (*model
 		return nil, err
 	}
 
+	msg := locale.Msg(ctx, "user_service.failed-to-delete-user")
+
 	if err := us.repository.Save(player.User.Id, payload.UserDefinitions); err != nil {
 		_, _ = us.client.DeleteUser(player.User.Id, ctx)
-		return nil, fmt.Errorf("FAILED_TO_DELETE_USER")
+		return nil, fmt.Errorf(msg)
 	}
 
 	return player, nil
