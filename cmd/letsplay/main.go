@@ -4,6 +4,7 @@ import (
 	"letsplay-microservice/internal/bootstrap"
 	"letsplay-microservice/internal/config"
 	"letsplay-microservice/internal/database"
+	"letsplay-microservice/internal/locale"
 	"letsplay-microservice/internal/logger"
 	"letsplay-microservice/internal/router"
 	"letsplay-microservice/internal/server"
@@ -13,6 +14,8 @@ import (
 )
 
 func main() {
+	locale.Init()
+
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("failed to load config: %v", err)

@@ -11,7 +11,7 @@ import (
 
 func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gin.Engine {
 	router := gin.New()
-	router.Use(gin.Recovery(), gin.Logger())
+	router.Use(gin.Recovery(), gin.Logger(), middleware.I18nMiddleware)
 
 	public := router.Group("/api/public")
 	{
