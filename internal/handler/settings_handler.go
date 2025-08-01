@@ -45,8 +45,12 @@ func (h *SettingsHandlers) Save(c *gin.Context) {
 	defer cancel()
 
 	newSettings, err := h.service.Save(ctx, payload)
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "ERROR_CREATING_SETTINGS"})
+		return
+	} else if newSettings == nil {
+		c.JSON(http.StatusNoContent, gin.H{})
 		return
 	}
 

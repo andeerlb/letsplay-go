@@ -2,9 +2,11 @@ package settings
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"letsplay-microservice/internal/model"
+	"strings"
 )
 
 type Repository struct {
@@ -16,27 +18,49 @@ func NewRepository(db *sqlx.DB) *Repository {
 }
 
 func (r *Repository) Save(userID uuid.UUID, settings model.Settings) (*model.Settings, error) {
-	var (
-		layout   string
-		language string
-	)
+	fields := []string{"user_id"}
+	values := []any{userID}
+	placeholders := []string{"$1"}
 
-	query := `
-		INSERT INTO settings (user_id, layout, language)
-		VALUES ($1, $2, $3)
-		ON CONFLICT (user_id) DO UPDATE SET
-			layout = EXCLUDED.nickname,
-			language = EXCLUDED.birthdate
-	`
+	var updateFields []string
+	paramIndex := 2
 
-	r.db.QueryRow(query, userID, settings.Layout, settings.Language).Scan(
-		&layout,
-		&language,
-	)
+	if settings.Layout != "" {
+		fields = append(fields, "layout")
+		values = append(values, settings.Layout)
+		placeholders = append(placeholders, fmt.Sprintf("$%d", paramIndex))
+		updateFields = append(updateFields, fmt.Sprintf("layout = EXCLUDED.layout"))
+		paramIndex++
+	}
+
+	if settings.Language != "" {
+		fields = append(fields, "language")
+		values = append(values, settings.Language)
+		placeholders = append(placeholders, fmt.Sprintf("$%d", paramIndex))
+		updateFields = append(updateFields, fmt.Sprintf("language = EXCLUDED.language"))
+		paramIndex++
+	}
+
+	if len(fields) == 1 {
+		return nil, nil
+	}
+
+	query := fmt.Sprintf(`
+		INSERT INTO settings (%s)
+		VALUES (%s)
+		ON CONFLICT (user_id) DO UPDATE SET %s
+		RETURNING layout, language
+	`, strings.Join(fields, ", "), strings.Join(placeholders, ", "), strings.Join(updateFields, ", "))
+
+	var layout, language sql.NullString
+	err := r.db.QueryRow(query, values...).Scan(&layout, &language)
+	if err != nil {
+		return nil, err
+	}
 
 	return &model.Settings{
-		Layout:   layout,
-		Language: language,
+		Layout:   layout.String,
+		Language: language.String,
 	}, nil
 }
 

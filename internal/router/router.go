@@ -24,7 +24,7 @@ func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gi
 	{
 		protected.GET("/user", c.UserHandler.Get)
 		protected.GET("/settings", c.SettingHandler.Get)
-		protected.POST("/settings", c.SettingHandler.Save)
+		protected.PUT("/settings", c.SettingHandler.Save)
 	}
 
 	return router
