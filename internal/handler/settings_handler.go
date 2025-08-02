@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	"letsplay-microservice/internal/model"
 	"letsplay-microservice/internal/service"
@@ -18,7 +17,10 @@ func NewSettingsHandler(service *service.SettingsService) *SettingsHandlers {
 }
 
 func (h *SettingsHandlers) Get(c *gin.Context) {
-	response, err := h.service.Get(c)
+	ctx, cancel := WithTimeoutFromGin(c, time.Second*6)
+	defer cancel()
+
+	response, err := h.service.Get(ctx)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "FAILED_TO_GET_SETTINGS"})
 		return
@@ -41,7 +43,7 @@ func (h *SettingsHandlers) Save(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(c.Request.Context(), 6*time.Second)
+	ctx, cancel := WithTimeoutFromGin(c, time.Second*6)
 	defer cancel()
 
 	newSettings, err := h.service.Save(ctx, payload)

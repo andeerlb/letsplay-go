@@ -2,20 +2,22 @@ package locale
 
 import (
 	"context"
-
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 const LocalizerKey = "localizer"
-const DefaultLanguage = "pt"
+const DefaultLanguage = "pt-BR"
 
 func T(ctx context.Context, messageID string, templateData map[string]interface{}) string {
 	localizer := localizerFromContext(ctx)
-
-	return localizer.MustLocalize(&i18n.LocalizeConfig{
+	msg, err := localizer.Localize(&i18n.LocalizeConfig{
 		MessageID:    messageID,
 		TemplateData: templateData,
 	})
+	if err != nil {
+		return messageID
+	}
+	return msg
 }
 
 func Msg(ctx context.Context, messageID string) string {

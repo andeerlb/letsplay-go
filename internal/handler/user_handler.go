@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"letsplay-microservice/internal/locale"
 	"net/http"
 	"time"
@@ -30,7 +29,7 @@ func (h *UserHandler) SignUp(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(c.Request.Context(), 6*time.Second)
+	ctx, cancel := WithTimeoutFromGin(c, time.Second*6)
 	defer cancel()
 
 	created, err := h.service.SignUp(ctx, payload)
@@ -49,7 +48,10 @@ func (h *UserHandler) SignUp(c *gin.Context) {
 }
 
 func (h *UserHandler) Get(c *gin.Context) {
-	response, err := h.service.GetUserDefinitions(c)
+	ctx, cancel := WithTimeoutFromGin(c, time.Second*6)
+	defer cancel()
+
+	response, err := h.service.GetUserDefinitions(ctx)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "FAILED_TO_GET_USER_DEFINITIONS"})
 		return

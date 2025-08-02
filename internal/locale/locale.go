@@ -17,7 +17,7 @@ func Init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = Bundle.LoadMessageFile("locale/active.pt.toml")
+	_, err = Bundle.LoadMessageFile("locale/active.pt-BR.toml")
 	if err != nil {
 		log.Fatal(err)
 	}
