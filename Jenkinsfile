@@ -32,20 +32,6 @@ pipeline {
                 """
             }
         }
-
-        stage('Push Image to Registry') {
-            when {
-                expression { env.DOCKER_USERNAME && env.DOCKER_PASSWORD }
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh """
-                    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                    docker push ${env.DOCKER_IMAGE}:${env.APP_ENV}
-                    """
-                }
-            }
-        }
     }
 
     post {
