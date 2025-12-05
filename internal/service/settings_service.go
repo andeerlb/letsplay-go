@@ -2,11 +2,12 @@ package service
 
 import (
 	"context"
+	"cyclolab-microservice/internal/middleware"
+	"cyclolab-microservice/internal/model"
+	"cyclolab-microservice/internal/pkg/settings"
 	"fmt"
+
 	"github.com/google/uuid"
-	"letsplay-microservice/internal/middleware"
-	"letsplay-microservice/internal/model"
-	"letsplay-microservice/internal/pkg/settings"
 )
 
 type SettingsService struct {

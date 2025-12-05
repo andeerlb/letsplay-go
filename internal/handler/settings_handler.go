@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	"letsplay-microservice/internal/model"
-	"letsplay-microservice/internal/service"
+	"cyclolab-microservice/internal/model"
+	"cyclolab-microservice/internal/service"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type SettingsHandlers struct {

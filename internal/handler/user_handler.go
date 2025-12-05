@@ -1,12 +1,12 @@
 package handler
 
 import (
-	"letsplay-microservice/internal/locale"
+	"cyclolab-microservice/internal/locale"
 	"net/http"
 	"time"
 
-	"letsplay-microservice/internal/model"
-	"letsplay-microservice/internal/service"
+	"cyclolab-microservice/internal/model"
+	"cyclolab-microservice/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

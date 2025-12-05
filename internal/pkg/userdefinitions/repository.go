@@ -1,13 +1,13 @@
 package userdefinitions
 
 import (
+	"cyclolab-microservice/internal/model"
 	"database/sql"
-	"encoding/json"
 	"errors"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"letsplay-microservice/internal/model"
-	"time"
 )
 
 type Repository struct {
@@ -19,32 +19,24 @@ func NewRepository(db *sqlx.DB) *Repository {
 }
 
 func (r *Repository) Save(userID uuid.UUID, definitions model.UserDefinitions) error {
-	preferredSportJSON, err := json.Marshal(definitions.PreferredSport)
-	if err != nil {
-		return err
-	}
-
-	otherSportsJSON, err := json.Marshal(definitions.OtherSports)
-	if err != nil {
-		return err
-	}
-
 	query := `
-		INSERT INTO user_definitions (user_id, nickname, birthdate, preferred_sport, other_sports)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO user_definitions (user_id, given_name, surname, birthdate, weight, height)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		ON CONFLICT (user_id) DO UPDATE SET
-			nickname = EXCLUDED.nickname,
+		    given_name = EXCLUDED.givenname,
+			surname = EXCLUDED.surname,
 			birthdate = EXCLUDED.birthdate,
-			preferred_sport = EXCLUDED.preferred_sport,
-			other_sports = EXCLUDED.other_sports
+			weight = EXCLUDED.weight,
+			height = EXCLUDED.height
 	`
 
-	_, err = r.db.Exec(query,
+	_, err := r.db.Exec(query,
 		userID,
-		definitions.Nickname,
+		definitions.GivenName,
+		definitions.Surname,
 		definitions.Birthdate,
-		preferredSportJSON,
-		otherSportsJSON,
+		definitions.Weight,
+		definitions.Height,
 	)
 
 	return err
@@ -52,23 +44,26 @@ func (r *Repository) Save(userID uuid.UUID, definitions model.UserDefinitions) e
 
 func (r *Repository) Get(userID uuid.UUID) (*model.UserDefinitions, error) {
 	var (
-		nickname           string
+		givenName, surname string
+		weight             float32
+		height             float32
+		gender             string
 		birthdate          time.Time
-		preferredSportJSON []byte
-		otherSportsJSON    []byte
 	)
 
 	query := `
-		SELECT nickname, birthdate, preferred_sport, other_sports
+		SELECT given_name, surname, birthdate, weight, height, gender
 		FROM user_definitions
 		WHERE user_id = $1
 	`
 
 	err := r.db.QueryRow(query, userID).Scan(
-		&nickname,
+		&givenName,
+		&surname,
 		&birthdate,
-		&preferredSportJSON,
-		&otherSportsJSON,
+		&weight,
+		&height,
+		&gender,
 	)
 
 	if err != nil {
@@ -78,21 +73,13 @@ func (r *Repository) Get(userID uuid.UUID) (*model.UserDefinitions, error) {
 		return nil, err
 	}
 
-	var preferred model.GameInfo
-	if err := json.Unmarshal(preferredSportJSON, &preferred); err != nil {
-		return nil, err
-	}
-
-	var others []model.GameInfo
-	if err := json.Unmarshal(otherSportsJSON, &others); err != nil {
-		return nil, err
-	}
-
 	return &model.UserDefinitions{
-		UserID:         userID,
-		Nickname:       nickname,
-		Birthdate:      birthdate,
-		PreferredSport: preferred,
-		OtherSports:    others,
+		UserID:    userID,
+		Birthdate: birthdate,
+		GivenName: givenName,
+		Surname:   surname,
+		Weight:    weight,
+		Height:    height,
+		Gender:    gender,
 	}, nil
 }

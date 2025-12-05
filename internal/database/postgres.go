@@ -1,12 +1,13 @@
 package database
 
 import (
+	"cyclolab-microservice/internal/config"
 	"fmt"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
-	"letsplay-microservice/internal/config"
 	"log"
 	"time"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 var DB *sqlx.DB

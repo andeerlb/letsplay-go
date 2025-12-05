@@ -1,12 +1,13 @@
 package settings
 
 import (
+	"cyclolab-microservice/internal/model"
 	"database/sql"
 	"fmt"
+	"strings"
+
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"letsplay-microservice/internal/model"
-	"strings"
 )
 
 type Repository struct {

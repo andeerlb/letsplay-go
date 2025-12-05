@@ -1,13 +1,13 @@
 package bootstrap
 
 import (
-	"letsplay-microservice/internal/client"
-	"letsplay-microservice/internal/config"
-	"letsplay-microservice/internal/database"
-	"letsplay-microservice/internal/handler"
-	"letsplay-microservice/internal/pkg/settings"
-	"letsplay-microservice/internal/pkg/userdefinitions"
-	"letsplay-microservice/internal/service"
+	"cyclolab-microservice/internal/client"
+	"cyclolab-microservice/internal/config"
+	"cyclolab-microservice/internal/database"
+	"cyclolab-microservice/internal/handler"
+	"cyclolab-microservice/internal/pkg/settings"
+	"cyclolab-microservice/internal/pkg/userdefinitions"
+	"cyclolab-microservice/internal/service"
 
 	"go.uber.org/zap"
 )

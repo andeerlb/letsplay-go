@@ -45,7 +45,7 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("error reading config file: %w", err)
 	}
 
-	v.SetEnvPrefix("LETSPLAY")
+	v.SetEnvPrefix("cyclolab")
 	v.AutomaticEnv()
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 

@@ -7,10 +7,11 @@
       "request": "launch",
       "mode": "debug",
       "cwd": "${workspaceFolder}",
-      "program": "${workspaceFolder}/cmd/letsplay/main.go",
+      "program": "${workspaceFolder}/cmd/cyclolab/main.go",
       "env": {
         "APP_ENV": "dev",
-        "JWT_SECRET": "${env.JWT_SECRET}",
+        "CYCLOLAB_JWT_SECRET": "${env.CYCLOLAB_JWT_SECRET}",
+        "CYCLOLAB_JWT_ADMIN_TOKEN": "${env.CYCLOLAB_JWT_ADMIN_TOKEN}",
         "GIN_MODE": "debug"
       }
     },
@@ -18,11 +19,13 @@
       "name": "QA",
       "type": "go",
       "request": "launch",
-      "mode": "auto",
-      "program": "${fileDirname}",
+      "mode": "debug",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/cmd/cyclolab/main.go",
       "env": {
         "APP_ENV": "qa",
-        "JWT_SECRET": "${env.JWT_SECRET}",
+        "CYCLOLAB_JWT_SECRET": "${env.CYCLOLAB_JWT_SECRET}",
+        "CYCLOLAB_JWT_ADMIN_TOKEN": "${env.CYCLOLAB_JWT_ADMIN_TOKEN}",
         "GIN_MODE": "debug"
       }
     }

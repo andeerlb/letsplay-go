@@ -1,12 +1,13 @@
 package router
 
 import (
+	"cyclolab-microservice/internal/bootstrap"
+	"cyclolab-microservice/internal/config"
+	"cyclolab-microservice/internal/handler"
+	"cyclolab-microservice/internal/middleware"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"letsplay-microservice/internal/bootstrap"
-	"letsplay-microservice/internal/config"
-	"letsplay-microservice/internal/handler"
-	"letsplay-microservice/internal/middleware"
 )
 
 func NewRouter(c *bootstrap.Container, logg *zap.Logger, cfg *config.Config) *gin.Engine {

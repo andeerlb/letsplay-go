@@ -1,8 +1,9 @@
 package model
 
 import (
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type UserAuth struct {
@@ -11,9 +12,11 @@ type UserAuth struct {
 }
 
 type UserDefinitions struct {
-	UserID         uuid.UUID  `json:"-" db:"user_id"`
-	Nickname       string     `json:"nickname" db:"nickname" binding:"required"`
-	Birthdate      time.Time  `json:"birthdate" db:"birthdate" binding:"required"`
-	PreferredSport GameInfo   `json:"preferredSport" db:"preferred_sport" binding:"required"`
-	OtherSports    []GameInfo `json:"otherSports,omitempty" db:"other_sports"`
+	UserID    uuid.UUID `json:"-" db:"user_id"`
+	GivenName string    `json:"givenName" db:"given_name" binding:"required"`
+	Surname   string    `json:"surname" db:"surname" binding:"required"`
+	Birthdate time.Time `json:"birthdate" db:"birthdate" binding:"required"`
+	Weight    float32   `json:"weight" db:"weight" binding:"required"`
+	Height    float32   `json:"height" db:"height" binding:"required"`
+	Gender    string    `json:"gender" db:"gender" binding:"required,oneof=M F"`
 }

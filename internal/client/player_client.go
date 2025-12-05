@@ -3,12 +3,13 @@ package client
 import (
 	"context"
 	"errors"
-	"github.com/google/uuid"
 	"net/http"
 	"os"
 	"time"
 
-	"letsplay-microservice/internal/model"
+	"github.com/google/uuid"
+
+	"cyclolab-microservice/internal/model"
 
 	"github.com/go-resty/resty/v2"
 	"go.uber.org/zap"
@@ -62,7 +63,7 @@ func (pc *PlayerClient) DeleteUser(userUUID uuid.UUID, ctx context.Context) (*bo
 	resp, err := pc.client.R().
 		SetContext(ctx).
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", "Bearer "+os.Getenv("LETSPLAY_JWT_ADMIN_TOKEN")).
+		SetHeader("Authorization", "Bearer "+os.Getenv("CYCLOLAB_JWT_ADMIN_TOKEN")).
 		Delete(pc.baseURL + "/admin/users/" + userUUID.String())
 
 	if err != nil {

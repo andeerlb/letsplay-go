@@ -18,7 +18,7 @@ pipeline {
                     sh """
                     docker build \
                       --build-arg APP_ENV=${env.APP_ENV} \
-                      -t letsplay:${env.APP_ENV} \
+                      -t cyclolab:${env.APP_ENV} \
                       -f docker/Dockerfile .
                     """
                 }
@@ -28,7 +28,7 @@ pipeline {
         stage('Test Container') {
             steps {
                 sh """
-                docker run --rm -e APP_ENV=${env.APP_ENV} letsplay:${env.APP_ENV}
+                docker run --rm -e APP_ENV=${env.APP_ENV} cyclolab:${env.APP_ENV}
                 """
             }
         }
@@ -37,7 +37,7 @@ pipeline {
     post {
         always {
             echo "Cleaning up Docker images..."
-            sh "docker rmi -f letsplay:${env.APP_ENV} || true"
+            sh "docker rmi -f cyclolab:${env.APP_ENV} || true"
         }
     }
 }

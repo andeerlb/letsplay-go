@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	"cyclolab-microservice/internal/client"
+	"cyclolab-microservice/internal/locale"
+	"cyclolab-microservice/internal/middleware"
+	"cyclolab-microservice/internal/model"
+	"cyclolab-microservice/internal/pkg/userdefinitions"
 	"fmt"
+
 	"github.com/google/uuid"
-	"letsplay-microservice/internal/client"
-	"letsplay-microservice/internal/locale"
-	"letsplay-microservice/internal/middleware"
-	"letsplay-microservice/internal/model"
-	"letsplay-microservice/internal/pkg/userdefinitions"
 )
 
 type UserService struct {

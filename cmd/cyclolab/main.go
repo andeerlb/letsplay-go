@@ -1,13 +1,13 @@
 package main
 
 import (
-	"letsplay-microservice/internal/bootstrap"
-	"letsplay-microservice/internal/config"
-	"letsplay-microservice/internal/database"
-	"letsplay-microservice/internal/locale"
-	"letsplay-microservice/internal/logger"
-	"letsplay-microservice/internal/router"
-	"letsplay-microservice/internal/server"
+	"cyclolab-microservice/internal/bootstrap"
+	"cyclolab-microservice/internal/config"
+	"cyclolab-microservice/internal/database"
+	"cyclolab-microservice/internal/locale"
+	"cyclolab-microservice/internal/logger"
+	"cyclolab-microservice/internal/router"
+	"cyclolab-microservice/internal/server"
 	"log"
 
 	"go.uber.org/zap"

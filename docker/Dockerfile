@@ -10,7 +10,7 @@ COPY . .
 ARG APP_ENV
 ENV APP_ENV=${APP_ENV}
 
-RUN go build -ldflags="-s -w" -o app cmd/letsplay/main.go
+RUN go build -ldflags="-s -w" -o app cmd/cyclolab/main.go
 
 FROM debian:bullseye-slim
 

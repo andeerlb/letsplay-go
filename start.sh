@@ -33,4 +33,4 @@ esac
 
 echo "Starting with APP_ENV=$ENV"
 
-APP_ENV="$ENV" go run cmd/letsplay/main.go
+APP_ENV="$ENV" go run cmd/cyclolab/main.go

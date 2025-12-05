@@ -2,10 +2,11 @@ package handler
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"letsplay-microservice/internal/locale"
-	"letsplay-microservice/internal/middleware"
+	"cyclolab-microservice/internal/locale"
+	"cyclolab-microservice/internal/middleware"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func WithTimeoutFromGin(c *gin.Context, timeout time.Duration) (context.Context, context.CancelFunc) {

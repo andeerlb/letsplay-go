@@ -1,9 +1,10 @@
 package middleware
 
 import (
+	"cyclolab-microservice/internal/locale"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
-	"letsplay-microservice/internal/locale"
 )
 
 func I18nMiddleware(c *gin.Context) {
