@@ -20,14 +20,8 @@ func NewRepository(db *sqlx.DB) *Repository {
 
 func (r *Repository) Save(userID uuid.UUID, definitions model.UserDefinitions) error {
 	query := `
-		INSERT INTO user_definitions (user_id, given_name, surname, birthdate, weight, height)
-		VALUES ($1, $2, $3, $4, $5, $6)
-		ON CONFLICT (user_id) DO UPDATE SET
-		    given_name = EXCLUDED.givenname,
-			surname = EXCLUDED.surname,
-			birthdate = EXCLUDED.birthdate,
-			weight = EXCLUDED.weight,
-			height = EXCLUDED.height
+		INSERT INTO user_definitions (user_id, given_name, surname, birthdate, weight, height, gender)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
 
 	_, err := r.db.Exec(query,
@@ -37,6 +31,7 @@ func (r *Repository) Save(userID uuid.UUID, definitions model.UserDefinitions) e
 		definitions.Birthdate,
 		definitions.Weight,
 		definitions.Height,
+		definitions.Gender,
 	)
 
 	return err
