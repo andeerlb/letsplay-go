@@ -63,3 +63,29 @@ func (h *UserHandler) Get(c *gin.Context) {
 		c.JSON(http.StatusOK, response)
 	}
 }
+
+func (h *UserHandler) Update(c *gin.Context) {
+	var payload model.UserDefinitions
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error":   "invalid_request",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	ctx, cancel := WithTimeoutFromGin(c, time.Second*6)
+	defer cancel()
+
+	response, err := h.service.UpdateUserDefinitions(ctx, payload)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "FAILED_TO_UPDATE_USER_DEFINITIONS"})
+		return
+	}
+
+	if response == nil {
+		c.JSON(http.StatusNoContent, nil)
+	} else {
+		c.JSON(http.StatusOK, response)
+	}
+}

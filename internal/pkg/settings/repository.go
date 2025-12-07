@@ -18,40 +18,49 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{db: db}
 }
 
-func (r *Repository) Save(userID uuid.UUID, settings model.Settings) (*model.Settings, error) {
-	fields := []string{"user_id"}
-	values := []any{userID}
-	placeholders := []string{"$1"}
+func (r *Repository) Upsert(userID uuid.UUID, settings model.Settings) (*model.Settings, error) {
+	var columns []string
+	var placeholders []string
+	var values []any
+	var updates []string
 
-	var updateFields []string
-	paramIndex := 2
+	paramIndex := 1
 
 	if settings.Layout != "" {
-		fields = append(fields, "layout")
-		values = append(values, settings.Layout)
+		columns = append(columns, "layout")
 		placeholders = append(placeholders, fmt.Sprintf("$%d", paramIndex))
-		updateFields = append(updateFields, fmt.Sprintf("layout = EXCLUDED.layout"))
+		values = append(values, settings.Layout)
+		updates = append(updates, "layout = EXCLUDED.layout")
 		paramIndex++
 	}
 
 	if settings.Language != "" {
-		fields = append(fields, "language")
-		values = append(values, settings.Language)
+		columns = append(columns, "language")
 		placeholders = append(placeholders, fmt.Sprintf("$%d", paramIndex))
-		updateFields = append(updateFields, fmt.Sprintf("language = EXCLUDED.language"))
+		values = append(values, settings.Language)
+		updates = append(updates, "language = EXCLUDED.language")
 		paramIndex++
 	}
 
-	if len(fields) == 1 {
+	if len(columns) == 0 {
 		return nil, nil
 	}
+
+	columns = append([]string{"user_id"}, columns...)
+	placeholders = append([]string{fmt.Sprintf("$%d", paramIndex)}, placeholders...)
+	values = append(values, userID)
 
 	query := fmt.Sprintf(`
 		INSERT INTO settings (%s)
 		VALUES (%s)
-		ON CONFLICT (user_id) DO UPDATE SET %s
+		ON CONFLICT (user_id) DO UPDATE
+		SET %s
 		RETURNING layout, language
-	`, strings.Join(fields, ", "), strings.Join(placeholders, ", "), strings.Join(updateFields, ", "))
+	`,
+		strings.Join(columns, ", "),
+		strings.Join(placeholders, ", "),
+		strings.Join(updates, ", "),
+	)
 
 	var layout, language sql.NullString
 	err := r.db.QueryRow(query, values...).Scan(&layout, &language)

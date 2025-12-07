@@ -78,3 +78,25 @@ func (r *Repository) Get(userID uuid.UUID) (*model.UserDefinitions, error) {
 		Gender:    gender,
 	}, nil
 }
+
+func (r *Repository) Upsert(userID uuid.UUID, definitions model.UserDefinitions) error {
+	query := `
+		INSERT INTO user_definitions (user_id, given_name, surname, birthdate, gender)
+		VALUES ($1, $2, $3, $4, $5)
+		ON CONFLICT (user_id) DO UPDATE SET
+			given_name = EXCLUDED.given_name,
+			surname = EXCLUDED.surname,
+			birthdate = EXCLUDED.birthdate,
+			gender = EXCLUDED.gender
+	`
+
+	_, err := r.db.Exec(query,
+		userID,
+		definitions.GivenName,
+		definitions.Surname,
+		definitions.Birthdate,
+		definitions.Gender,
+	)
+
+	return err
+}

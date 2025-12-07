@@ -20,11 +20,11 @@ func NewSettingsService(repo *settings.Repository) *SettingsService {
 	}
 }
 
-func (us *SettingsService) Save(ctx context.Context, settings model.Settings) (*model.Settings, error) {
+func (us *SettingsService) Update(ctx context.Context, settings model.Settings) (*model.Settings, error) {
 	userUUID, _ := ctx.Value(middleware.UserIDKey).(uuid.UUID)
-	userSettings, err := us.repository.Save(userUUID, settings)
+	userSettings, err := us.repository.Upsert(userUUID, settings)
 	if err != nil {
-		return nil, fmt.Errorf("FAILED_TO_SAVE_SETTINGS")
+		return nil, fmt.Errorf("FAILED_TO_UPDATE_SETTINGS")
 	}
 	return userSettings, nil
 }

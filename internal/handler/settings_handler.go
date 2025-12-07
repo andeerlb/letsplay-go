@@ -34,7 +34,7 @@ func (h *SettingsHandlers) Get(c *gin.Context) {
 	}
 }
 
-func (h *SettingsHandlers) Save(c *gin.Context) {
+func (h *SettingsHandlers) Update(c *gin.Context) {
 	var payload model.Settings
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -47,10 +47,10 @@ func (h *SettingsHandlers) Save(c *gin.Context) {
 	ctx, cancel := WithTimeoutFromGin(c, time.Second*6)
 	defer cancel()
 
-	newSettings, err := h.service.Save(ctx, payload)
+	newSettings, err := h.service.Update(ctx, payload)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "ERROR_CREATING_SETTINGS"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "ERROR_UPDATING_SETTINGS"})
 		return
 	} else if newSettings == nil {
 		c.JSON(http.StatusNoContent, gin.H{})

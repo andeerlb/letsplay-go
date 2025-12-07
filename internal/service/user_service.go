@@ -48,3 +48,12 @@ func (us *UserService) GetUserDefinitions(ctx context.Context) (*model.UserDefin
 	}
 	return userDefinitions, nil
 }
+
+func (us *UserService) UpdateUserDefinitions(ctx context.Context, definitions model.UserDefinitions) (*model.UserDefinitions, error) {
+	userUUID, _ := ctx.Value(middleware.UserIDKey).(uuid.UUID)
+	err := us.repository.Upsert(userUUID, definitions)
+	if err != nil {
+		return nil, fmt.Errorf("FAILED_TO_UPDATE_USER_DEFINITIONS")
+	}
+	return &definitions, nil
+}

@@ -10,8 +10,8 @@
       "program": "${workspaceFolder}/cmd/cyclolab/main.go",
       "env": {
         "APP_ENV": "dev",
-        "CYCLOLAB_JWT_SECRET": "${env.CYCLOLAB_JWT_SECRET}",
-        "CYCLOLAB_JWT_ADMIN_TOKEN": "${env.CYCLOLAB_JWT_ADMIN_TOKEN}",
+        "CYCLOLAB_JWT_SECRET": "01f79368ae324d38631057fac5001be0d498ce984c3d02e28d56f9dd9f81c2b01f6c31ad412c8a654fb99fd2020bc5381a419b1e1b4bc3334c68bdf2715f54be",
+        "CYCLOLAB_JWT_ADMIN_TOKEN": "01f79368ae324d38631057fac5001be0d498ce984c3d02e28d56f9dd9f81c2b01f6c31ad412c8a654fb99fd2020bc5381a419b1e1b4bc3334c68bdf2715f54be",
         "GIN_MODE": "debug"
       }
     },
