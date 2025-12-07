@@ -65,7 +65,7 @@ func (h *UserHandler) Get(c *gin.Context) {
 }
 
 func (h *UserHandler) Update(c *gin.Context) {
-	var payload model.UserDefinitions
+	var payload model.UserDefinitionsUpdateRequest
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":   "invalid_request",

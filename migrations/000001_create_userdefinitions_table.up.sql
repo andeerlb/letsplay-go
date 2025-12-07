@@ -1,4 +1,4 @@
-CREATE TYPE gender_type AS ENUM ('M', 'W');
+CREATE TYPE gender_type AS ENUM ('M', 'F');
 
 CREATE TABLE user_definitions (
     user_id UUID PRIMARY KEY,

@@ -79,15 +79,15 @@ func (r *Repository) Get(userID uuid.UUID) (*model.UserDefinitions, error) {
 	}, nil
 }
 
-func (r *Repository) Upsert(userID uuid.UUID, definitions model.UserDefinitions) error {
+func (r *Repository) Update(userID uuid.UUID, definitions model.UserDefinitionsUpdateRequest) error {
 	query := `
-		INSERT INTO user_definitions (user_id, given_name, surname, birthdate, gender)
-		VALUES ($1, $2, $3, $4, $5)
-		ON CONFLICT (user_id) DO UPDATE SET
-			given_name = EXCLUDED.given_name,
-			surname = EXCLUDED.surname,
-			birthdate = EXCLUDED.birthdate,
-			gender = EXCLUDED.gender
+		UPDATE user_definitions
+		SET
+			given_name = $2,
+			surname = $3,
+			birthdate = $4,
+			gender = $5
+		WHERE user_id = $1
 	`
 
 	_, err := r.db.Exec(query,
